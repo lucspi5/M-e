@@ -21,19 +21,18 @@
             overflow-x: hidden;
         }
 
-        /* VÍDEO DE FUNDO - Ajuste para garantir que apareça */
-        #bg-video {
+        /* GIF DE FUNDO */
+        .background-gif {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* NOME DO SEU ARQUIVO GIF ABAIXO */
+            background-image: url('fundo.gif'); 
+            background-size: cover;
+            background-position: center;
             z-index: -1;
-            transform: translate(-50%, -50%);
-            object-fit: cover;
-            display: block; /* Força a exibição */
         }
 
         .container {
@@ -48,11 +47,11 @@
             min-height: 100vh;
         }
 
-        /* Centraliza o botão na tela inicial */
         #step1 {
             justify-content: center;
         }
 
+        /* Botão Rosa com Letras Vermelhas */
         .btn-presente {
             background-color: #ffc0cb;
             color: #ff0000;
@@ -73,7 +72,6 @@
             margin-bottom: 10px;
         }
 
-        /* TÍTULO EM MAIÚSCULO E BRANCO */
         .titulo-branco {
             color: white;
             font-size: 1.8rem;
@@ -115,21 +113,20 @@
 </head>
 <body>
 
-    <!-- Tentei simplificar as tags do vídeo para evitar bloqueios -->
-    <video autoplay muted loop playsinline id="bg-video">
-        <source src="video.mp4" type="video/mp4">
-    </video>
+    <!-- Div para o GIF de fundo -->
+    <div class="background-gif"></div>
 
+    <!-- Tela Inicial -->
     <div id="step1" class="container">
         <button class="btn-presente" onclick="showGift()">Receber Presente</button>
     </div>
 
+    <!-- Tela do Texto -->
     <div id="step2" class="container hidden">
         <div class="photo-container">
             <img src="foto.jpg" alt="Foto especial">
         </div>
 
-        <!-- Parte que você pediu: Maiúsculo e Branco -->
         <h1 class="titulo-branco">FELIZ DIA DAS MÃES</h1>
 
         <div class="texto-mae">
@@ -140,24 +137,10 @@ minha mãe que sempre esteve ali cmg, me vendo crescer sempre nos proporcionando
     </div>
 
     <script>
-        // Função para tentar forçar o play do vídeo
-        function forceVideo() {
-            const v = document.getElementById('bg-video');
-            if (v) {
-                v.play().catch(() => {
-                    console.log("Aguardando interação para rodar o vídeo.");
-                });
-            }
-        }
-
-        window.onload = forceVideo;
-
         function showGift() {
             document.getElementById('step1').classList.add('hidden');
             document.getElementById('step2').classList.remove('hidden');
-            document.body.style.overflowY = "auto"; // Permite rolar para ler
-            
-            forceVideo();
+            document.body.style.overflowY = "auto";
             rainHearts();
         }
 
