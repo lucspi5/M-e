@@ -7,21 +7,21 @@
     <style>
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
             -webkit-tap-highlight-color: transparent;
         }
 
         body, html {
-            margin: 0;
-            padding: 0;
             width: 100%;
             height: 100%;
             font-family: 'Arial', sans-serif;
-            overflow-y: auto; /* Permite rolar para ler o texto longo */
             background-color: black;
             color: white;
+            overflow-x: hidden;
         }
 
-        /* Vídeo Fixo no Fundo */
+        /* VÍDEO DE FUNDO - Ajuste para garantir que apareça */
         #bg-video {
             position: fixed;
             top: 50%;
@@ -31,8 +31,9 @@
             width: auto;
             height: auto;
             z-index: -1;
-            transform: translateX(-50%) translateY(-50%);
+            transform: translate(-50%, -50%);
             object-fit: cover;
+            display: block; /* Força a exibição */
         }
 
         .container {
@@ -45,10 +46,13 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
+        }
+
+        /* Centraliza o botão na tela inicial */
+        #step1 {
             justify-content: center;
         }
 
-        /* Botão Rosa com Letras Vermelhas */
         .btn-presente {
             background-color: #ffc0cb;
             color: #ff0000;
@@ -66,22 +70,28 @@
             max-height: 350px;
             border-radius: 20px;
             box-shadow: 0 8px 25px rgba(0,0,0,0.7);
-            margin-bottom: 25px;
+            margin-bottom: 10px;
         }
 
-        /* Estilo do seu texto */
+        /* TÍTULO EM MAIÚSCULO E BRANCO */
+        .titulo-branco {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+        }
+
         .texto-mae {
             color: white;
-            text-shadow: 2px 2px 10px rgba(0,0,0,1);
+            text-shadow: 1px 1px 8px rgba(0,0,0,1);
             font-size: 1.1rem;
             line-height: 1.6;
-            font-weight: 500;
-            background: rgba(0, 0, 0, 0.4); /* Fundo sutil para ler melhor */
+            background: rgba(0, 0, 0, 0.5);
             padding: 20px;
             border-radius: 15px;
-            max-width: 100%;
             text-align: center;
-            white-space: pre-wrap; /* Mantém as quebras de linha */
+            white-space: pre-wrap;
         }
 
         .hidden {
@@ -105,20 +115,22 @@
 </head>
 <body>
 
+    <!-- Tentei simplificar as tags do vídeo para evitar bloqueios -->
     <video autoplay muted loop playsinline id="bg-video">
         <source src="video.mp4" type="video/mp4">
     </video>
 
-    <!-- Tela Inicial -->
     <div id="step1" class="container">
         <button class="btn-presente" onclick="showGift()">Receber Presente</button>
     </div>
 
-    <!-- Tela do Texto -->
     <div id="step2" class="container hidden">
         <div class="photo-container">
             <img src="foto.jpg" alt="Foto especial">
         </div>
+
+        <!-- Parte que você pediu: Maiúsculo e Branco -->
+        <h1 class="titulo-branco">FELIZ DIA DAS MÃES</h1>
 
         <div class="texto-mae">
 Feliz dia das mães, mamanhet eu qria lhe dizer que eu te amo mto, vc é td pra mim, sempre esteve ali quando eu mais precisei e tbm qndo mais eu preciso vc está ali tbm, vc é a minha melhor amiga e a minha segunda mãe, tenho muito orgulho da senhora e admiro mto vc, vê as coisas que a senhora passa e ter que escutar calada e aguentar tudo n é pra qualquer um, vc é forte demais mamanhet e sempre estarei aq pra te apoiar e lhe dá todo amor e carinho, vc é tudo pra mim... 
@@ -128,12 +140,24 @@ minha mãe que sempre esteve ali cmg, me vendo crescer sempre nos proporcionando
     </div>
 
     <script>
+        // Função para tentar forçar o play do vídeo
+        function forceVideo() {
+            const v = document.getElementById('bg-video');
+            if (v) {
+                v.play().catch(() => {
+                    console.log("Aguardando interação para rodar o vídeo.");
+                });
+            }
+        }
+
+        window.onload = forceVideo;
+
         function showGift() {
             document.getElementById('step1').classList.add('hidden');
             document.getElementById('step2').classList.remove('hidden');
+            document.body.style.overflowY = "auto"; // Permite rolar para ler
             
-            document.getElementById('bg-video').play();
-            
+            forceVideo();
             rainHearts();
         }
 
