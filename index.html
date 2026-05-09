@@ -112,13 +112,13 @@
         <img src="fundo.gif" alt="fundo">
     </div>
 
-    <!-- Elemento de Áudio escondido -->
-    <audio id="musica-fundo" loop>
+    <!-- Áudio com preload para carregar antes do clique -->
+    <audio id="musica-fundo" preload="auto" loop>
         <source src="musica.mp3" type="audio/mpeg">
     </audio>
 
     <div id="step1" class="container">
-        <button class="btn-presente" onclick="showGift()">Receber Presente</button>
+        <button class="btn-presente" id="btnPlay">Receber Presente</button>
     </div>
 
     <div id="step2" class="container hidden">
@@ -136,22 +136,26 @@ minha mãe que sempre esteve ali cmg, me vendo crescer sempre nos proporcionando
     </div>
 
     <script>
-        function showGift() {
-            // Tocar música
-            const som = document.getElementById('musica-fundo');
-            som.play().catch(e => console.log("Erro ao tocar música:", e));
+        const btn = document.getElementById('btnPlay');
+        const som = document.getElementById('musica-fundo');
 
-            // Vibrar
+        btn.addEventListener('click', function() {
+            // Tenta tocar a música com volume no talo
+            som.volume = 1.0;
+            som.play();
+
+            // Vibrar celular
             if (navigator.vibrate) {
                 navigator.vibrate(200);
             }
 
+            // Mudar de tela
             document.getElementById('step1').classList.add('hidden');
             document.getElementById('step2').classList.remove('hidden');
             document.body.style.overflowY = "auto";
             
             rainHearts();
-        }
+        });
 
         function rainHearts() {
             for (let i = 0; i < 100; i++) {
