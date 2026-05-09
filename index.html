@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Feliz Dia das Mães ❤️</title>
     <style>
         * {
@@ -12,36 +12,27 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* CORREÇÃO DO FUNDO BRANCO: Força o fundo preto e trava a rolagem elástica */
         body, html {
             width: 100%;
             height: 100%;
             font-family: 'Arial', sans-serif;
-            background-color: black; /* Se algo falhar, o fundo é preto e não branco */
-            color: white;
-            overflow: hidden; /* Trava a rolagem elástica do navegador */
-            position: fixed; /* Evita que a página se mova */
+            overflow-x: hidden;
         }
 
-        /* GIF DE FUNDO TOTALMENTE FIXO E CENTRALIZADO */
         .bg-gif-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             z-index: -1;
-            transform: translate(-50%, -50%);
-            object-fit: cover;
-            display: block;
         }
 
         .bg-gif-container img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: block;
         }
 
         .container {
@@ -49,19 +40,15 @@
             z-index: 1;
             text-align: center;
             width: 100%;
-            height: 100%; /* O container ocupa a tela toda */
             padding: 40px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-height: 100vh;
         }
 
-        /* Tela Inicial: Botão centralizado */
-        #step1 {
-            justify-content: center;
-        }
+        #step1 { justify-content: center; }
 
-        /* Botão Rosa com Letras Vermelhas */
         .btn-presente {
             background-color: #ffc0cb;
             color: #ff0000;
@@ -72,14 +59,8 @@
             border-radius: 50px;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            transition: transform 0.2s;
         }
 
-        .btn-presente:active {
-            transform: scale(0.95);
-        }
-
-        /* Tela do Texto: Foto e Título */
         .photo-container img {
             max-width: 90%;
             max-height: 350px;
@@ -96,17 +77,7 @@
             text-shadow: 3px 3px 15px rgba(0,0,0,1);
         }
 
-        /* Texto Longo: Precisa de rolagem própria */
-        .texto-mae-scroll {
-            width: 100%;
-            flex: 1; /* Ocupa o resto do espaço */
-            overflow-y: auto; /* Permite rolar APENAS o texto */
-            padding: 10px;
-            display: flex;
-            justify-content: center;
-        }
-
-        .texto-mae-conteudo {
+        .texto-mae {
             color: white;
             text-shadow: 1px 1px 8px rgba(0,0,0,1);
             font-size: 1.1rem;
@@ -116,13 +87,9 @@
             border-radius: 15px;
             text-align: center;
             white-space: pre-wrap;
-            max-width: 100%;
-            margin-bottom: 20px;
         }
 
-        .hidden {
-            display: none !important;
-        }
+        .hidden { display: none !important; }
 
         .heart-particle {
             position: fixed;
@@ -135,9 +102,7 @@
         }
 
         @keyframes fall {
-            to {
-                transform: translateY(110vh) rotate(360deg);
-            }
+            to { transform: translateY(110vh) rotate(360deg); }
         }
     </style>
 </head>
@@ -147,8 +112,13 @@
         <img src="fundo.gif" alt="fundo">
     </div>
 
+    <!-- Áudio com preload para carregar antes do clique -->
+    <audio id="musica-fundo" preload="auto" loop>
+        <source src="musica.mp3" type="audio/mpeg">
+    </audio>
+
     <div id="step1" class="container">
-        <button class="btn-presente" onclick="showGift()">Receber Presente</button>
+        <button class="btn-presente" id="btnPlay">Receber Presente</button>
     </div>
 
     <div id="step2" class="container hidden">
@@ -158,28 +128,34 @@
 
         <h1 class="titulo-branco">FELIZ DIA DAS MÃES</h1>
 
-        <div class="texto-mae-scroll">
-            <div class="texto-mae-conteudo">
+        <div class="texto-mae">
 Feliz dia das mães, mamanhet eu qria lhe dizer que eu te amo mto, vc é td pra mim, sempre esteve ali quando eu mais precisei e tbm qndo mais eu preciso vc está ali tbm, vc é a minha melhor amiga e a minha segunda mãe, tenho muito orgulho da senhora e admiro mto vc, vê as coisas que a senhora passa e ter que escutar calada e aguentar tudo n é pra qualquer um, vc é forte demais mamanhet e sempre estarei aq pra te apoiar e lhe dá todo amor e carinho, vc é tudo pra mim... 
 
 minha mãe que sempre esteve ali cmg, me vendo crescer sempre nos proporcionando melhores momentos, fazendo o papel de pai e de mãe tbm, se n fosse a senhora n sei oq seria de mim, e tbm feliz dia das mães pra nossa mãe... esperamos um dia a gente reencontrar ela e o vovô, ela está mto orgulhosa de vc mamanhet, e td dará certo pra nós, vms conseguir conquistar td q queremos... e ngm nesse mundo vai derrubar a gente, q Deus abençoe vc mamanhet eu amo vc dms, n tenho dinheiro pra presente espero que q a senhora tenha gostado desse humilde texto feito de coração 😓🤍
-            </div>
         </div>
     </div>
 
     <script>
-        function showGift() {
-            // Vibração ao clicar
+        const btn = document.getElementById('btnPlay');
+        const som = document.getElementById('musica-fundo');
+
+        btn.addEventListener('click', function() {
+            // Tenta tocar a música com volume no talo
+            som.volume = 1.0;
+            som.play();
+
+            // Vibrar celular
             if (navigator.vibrate) {
                 navigator.vibrate(200);
             }
 
+            // Mudar de tela
             document.getElementById('step1').classList.add('hidden');
             document.getElementById('step2').classList.remove('hidden');
-            // Não alteramos o overflow do body, ele continua hidden.
+            document.body.style.overflowY = "auto";
             
             rainHearts();
-        }
+        });
 
         function rainHearts() {
             for (let i = 0; i < 100; i++) {
@@ -189,11 +165,8 @@ minha mãe que sempre esteve ali cmg, me vendo crescer sempre nos proporcionando
                     heart.innerHTML = '❤️';
                     heart.style.left = Math.random() * 100 + 'vw';
                     heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                    heart.style.opacity = Math.random() * 0.5 + 0.5;
                     heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
-                    
                     document.body.appendChild(heart);
-                    
                     setTimeout(() => heart.remove(), 5000);
                 }, i * 100);
             }
