@@ -1,15 +1,4 @@
 <!DOCTYPE html>
-<html lang="en">
-
-  <head>
-    <meta charset="UTF-8">
-    <title>Untitled</title>
-    
-
-  </head>
-    
-  <body>
-  <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -27,111 +16,116 @@
             justify-content: center;
             align-items: center;
             text-align: center;
+            background-color: black;
         }
 
-        /* Vídeo de fundo em loop */
+        /* Vídeo de fundo forçado */
         #bg-video {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
             z-index: -1;
-        }
-
-        /* Foto que aparece depois */
-        .photo-container img {
-            max-width: 80%;
-            max-height: 300px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            margin: 20px 0;
+            object-fit: cover;
+            background-size: cover;
         }
 
         .container {
-            background: transparent;
             z-index: 1;
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        /* Botão com fundo rosa e letras vermelhas */
+        .photo-container img {
+            max-width: 85%;
+            max-height: 400px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+            margin-bottom: 20px;
+        }
+
+        /* Botão Rosa com Letras Vermelhas */
         .btn-presente {
-            background-color: #ffc0cb; /* Rosa */
-            color: #ff0000; /* Vermelho */
+            background-color: #ffc0cb;
+            color: #ff0000;
             border: none;
-            padding: 15px 35px;
+            padding: 18px 40px;
             font-size: 1.3rem;
             font-weight: bold;
             border-radius: 50px;
             cursor: pointer;
-            transition: transform 0.3s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-
-        .btn-presente:hover {
-            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
 
         .hidden {
             display: none;
         }
 
-        h2 {
+        /* Texto personalizado embaixo da foto */
+        .texto-mae {
             color: white;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
-            margin: 10px 0;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.9);
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 15px;
+            max-width: 90%;
         }
 
-        /* Chuva de corações */
         .heart-particle {
             position: absolute;
             color: #ff4b5c;
             font-size: 25px;
-            user-select: none;
             pointer-events: none;
             z-index: 10;
             animation: floatUp 3s linear forwards;
         }
 
         @keyframes floatUp {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+            0% { transform: translateY(100vh); opacity: 1; }
+            100% { transform: translateY(-10vh); opacity: 0; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Vídeo de Fundo -->
-    <video autoplay muted loop id="bg-video">
-        <source src="SEU_VIDEO_AQUI.mp4" type="video/mp4">
+    <!-- Vídeo de fundo com comandos para carregar melhor -->
+    <video autoplay muted loop playsinline poster="foto.jpg" id="bg-video">
+        <source src="video.mp4" type="video/mp4">
     </video>
 
-    <!-- Tela Inicial -->
+    <!-- Tela 1: Só o Botão -->
     <div id="step1" class="container">
         <button class="btn-presente" onclick="showGift()">Receber Presente</button>
     </div>
 
-    <!-- Tela com a Foto e Mensagem -->
+    <!-- Tela 2: Foto + Texto embaixo -->
     <div id="step2" class="container hidden">
-        <h2>TEXTO DE CIMA AQUI</h2>
-        
         <div class="photo-container">
-            <!-- COLOQUE SUA FOTO AQUI -->
-            <img src="SUA_FOTO_AQUI.jpg" alt="Foto especial">
+            <img src="foto.jpg" alt="Foto especial">
         </div>
 
-        <h2>eu te amo mto, feliz dia das mães</h2>
-        
-        <button class="btn-presente" onclick="rainHearts()">eu também te amo muito ❤️</button>
-        
-        <h2>TEXTO DE BAIXO AQUI</h2>
+        <!-- Coloque seu texto aqui embaixo -->
+        <div class="texto-mae" onclick="rainHearts()">
+            SUA MENSAGEM PERSONALIZADA AQUI ❤️
+        </div>
     </div>
 
     <script>
         function showGift() {
             document.getElementById('step1').classList.add('hidden');
             document.getElementById('step2').classList.remove('hidden');
+            
+            // Garante que o vídeo tente rodar ao interagir
+            const v = document.getElementById('bg-video');
+            v.play().catch(error => console.log("Vídeo aguardando interação"));
+            
+            // Inicia a chuva de corações automaticamente ao abrir
+            rainHearts();
         }
 
         function rainHearts() {
@@ -141,17 +135,11 @@
                     heart.classList.add('heart-particle');
                     heart.innerHTML = '❤️';
                     heart.style.left = Math.random() * 100 + 'vw';
-                    heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
                     document.body.appendChild(heart);
-                    
-                    setTimeout(() => heart.remove(), 4000);
+                    setTimeout(() => heart.remove(), 3000);
                 }, i * 100);
             }
         }
     </script>
 </body>
-</html>
-    
-  </body>
-  
 </html>
